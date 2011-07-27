@@ -7,13 +7,13 @@ from draughtscore.DPiece import DPiece
 
 class DBoard(object):
     '''
-    classdocs
+    Class for Draughts board.
     '''
     
     def __init__(self):
         '''
-        Constructor. Inizialize an empty draughts board with 
-        all the pieces in starting position.
+        Constructor. Initialize an empty draughts board with 
+        the pieces in starting position.
         '''
         self.light_pieces = []
         self.dark_pieces = []
@@ -197,7 +197,7 @@ class DBoard(object):
                 
     def board_score(self, weights):
         '''
-        Static Evalutation Function for Draughts Board.
+        Static Evaluation Function for Draughts Board.
         
         ARGS:
             @param weights: Dictionary of Weights for each feature.

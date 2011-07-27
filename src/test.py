@@ -4,6 +4,8 @@ Created on Jul 22, 2011
 @author: davide
 '''
 
+from draughtscore.DraughtsBrain import DraughtsBrain
+
 weights = {'PIECE':10,
           'KING':30,
           'BACK':1,
@@ -13,3 +15,6 @@ weights = {'PIECE':10,
           'FRONT':2,
           'KFRONT':2,
           'MOB':0}
+
+D = DraughtsBrain('AI',weights,4)
+D.run()

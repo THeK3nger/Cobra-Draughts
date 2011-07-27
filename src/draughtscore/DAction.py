@@ -12,6 +12,7 @@ class DAction(object):
         * MOVE : Standard Move
         * CAPTURE : Capture Enemy Piece
         * UNDO : Undo Move
+        TODO: Chain (?)
     '''
 
 

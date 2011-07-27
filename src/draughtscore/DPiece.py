@@ -107,7 +107,6 @@ class DPiece(object):
         '''
         Check for piece possible actions.
         '''
-        #TODO: BUG: DO NOT PROMOTE!
         move = []
         row, col = self.position
         capture = False # True if piece can capture enemy piece.
