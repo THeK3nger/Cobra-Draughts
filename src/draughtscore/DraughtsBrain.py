@@ -61,6 +61,10 @@ class DraughtsBrain(object):
             if element[1] == value :
                 print(self.turn + " :: " + str(element[0]))
                 return element[0]
+        else :
+            if len(self.path) != 0 : # If path is not empty.
+                return self.path[0][0]
+        return None
             
     def ask_move(self):
         pass        
@@ -71,6 +75,8 @@ class DraughtsBrain(object):
         no_capt_count = 0
         while not gameover and no_capt_count < 80 :
             move = self.best_move()
+            if not move :
+                break
             self.apply_move(move)
             if len(self.board.light_pieces) == 0 :
                 gameover = True
@@ -85,13 +91,15 @@ class DraughtsBrain(object):
                 else :
                     no_capt_count = 0
             print(self.board)
+        print win
             
     
     def run_player(self):
         gameover = False
         while not gameover :
             if self.turn == 'LIGHT' :
-                possible_move = self.board.all_move('LIGHT')
+                pass
+                # TODO: Human Interaction
                 #self.ask_move()
                 
     def apply_move(self, action):
@@ -111,9 +119,10 @@ class DraughtsBrain(object):
                 v = max(v, self.alphabeta(alpha, beta, level - 1, self.switch_player(player), weights))
                 self.board.undo_last()
                 if beta <= v :
-                    self.current_best = mov
                     return v
                 alpha = max(alpha, v)
+            if len(moves) == 0 :
+                self.path.append((self.board.movelist[self.move], v))
             return v
         else :
             moves = self.board.all_move(player);
@@ -123,9 +132,10 @@ class DraughtsBrain(object):
                 v = min(v, self.alphabeta(alpha, beta, level - 1, self.switch_player(player), weights))
                 self.board.undo_last()
                 if v <= alpha :
-                    self.current_best = mov
                     return v
                 beta = min(beta, v)
+            if len(moves) == 0 :
+                self.path.append((self.board.movelist[self.move], v))
             return v
         
                 
