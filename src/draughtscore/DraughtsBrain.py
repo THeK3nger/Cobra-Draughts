@@ -1,7 +1,7 @@
 '''
 Created on Jul 21, 2011
 
-@author: davide
+@author: Davide Aversa
 '''
 from draughtscore.DBoard import DBoard
 
@@ -17,9 +17,15 @@ class DraughtsBrain(object):
         '''
         Constructor
         
-        Two Type:
+        There are two match type:
             * AI -> AI vs AI
-            * PLAYER -> AI vs Player
+            * PLAYER -> AI vs Player [ TODO: ]
+            
+        ARGS:
+            @param type: Match type.
+            @param weights: Weights for board Static-Evaluation-Function.
+            @param horizon: Max level for the search algorithm. 
+            @param weights_bis: Weights for the dark-side AI. 
         '''
         self.type = type
         self.weights = weights
@@ -34,42 +40,72 @@ class DraughtsBrain(object):
             self.weights_bis = weights_bis
         
     def run(self):
+        '''
+        Start the match according to type.
+        '''
         if self.type == 'PLAYER' :
             self.run_player()
         elif self.type == 'AI' :
             self.run_ai()
     
     def switch_turn(self):
+        '''
+        Switch current in-game player.
+        '''
         if self.turn == 'LIGHT' :
             self.turn = 'DARK'
         else :
             self.turn = 'LIGHT'
     
-    def switch_player(self, player):
+    def _switch_player(self, player):
+        '''
+        Switch player tag.
+        
+        ARGS:
+            @param player: Current player.
+        
+        RETURN:
+            @return: Next Player.
+        '''
         if player == 'LIGHT' :
             return 'DARK'
         else :
             return 'LIGHT'
     
     def best_move(self):
+        '''
+        Find the next best move according current player state.
+        
+        This method use the Min-Max algorithm wit Alpha-Beta pruning system
+        to minimize the number of explored nodes.
+        
+        RETURN:
+            @return: The best move.
+        '''
         self.path = []
         if self.turn == 'LIGHT' :
             value = self.alphabeta(-float('inf'), float('inf'), self.horizon, self.turn, self.weights)
         else :
             value = self.alphabeta(-float('inf'), float('inf'), self.horizon, self.turn, self.weights_bis)
         for element in self.path :
-            if element[1] == value :
+            if element[1] == value : # Find path with value equal to best-value.
                 print(self.turn + " :: " + str(element[0]))
                 return element[0]
         else :
-            if len(self.path) != 0 : # If path is not empty.
-                return self.path[0][0]
+            if len(self.path) != 0 : # If path is not empty return first value.
+                return self.path[0][0] # WARNING: This code should never be executed.
         return None
             
     def ask_move(self):
-        pass        
+        '''
+        Get move from human user.
+        '''
+        pass
     
     def run_ai(self):
+        '''
+        Execute AI vs AI match.
+        '''
         gameover = False
         win = 0
         no_capt_count = 0
@@ -95,18 +131,40 @@ class DraughtsBrain(object):
             
     
     def run_player(self):
+        '''
+        Execute Human vs AI match.
+        
+        TODO:
+        '''
         gameover = False
         while not gameover :
             if self.turn == 'LIGHT' :
                 pass
-                # TODO: Human Interaction
                 #self.ask_move()
                 
     def apply_move(self, action):
+        '''
+        Apply an action to board.
+        
+        ARGS:
+            @param action: Action that it's going to be executed.
+        '''
         self.board.apply(action)
         self.move += 1
                 
     def alphabeta(self, alpha, beta, level, player, weights):
+        '''
+        THE GLORIOUS ALPHA-BETA ALGORITHM. GLORIFY HIM.
+        
+        ARGS:
+            @param aplha: Current Alpha Value.
+            @param beta: Current Beta Value.
+            @param level: Current Level.
+            @param player: Current Player.
+            @param weights: Set of weights to use. TODO: Can remove this?
+        
+        RETURN    
+        '''
         if level == 0 :
             value = self.board.board_score(weights)
             self.path.append((self.board.movelist[self.move], value))
@@ -116,7 +174,7 @@ class DraughtsBrain(object):
             v = -float('inf')
             for mov in moves :
                 self.board.apply(mov)
-                v = max(v, self.alphabeta(alpha, beta, level - 1, self.switch_player(player), weights))
+                v = max(v, self.alphabeta(alpha, beta, level - 1, self._switch_player(player), weights))
                 self.board.undo_last()
                 if beta <= v :
                     return v
@@ -129,7 +187,7 @@ class DraughtsBrain(object):
             v = float('inf')
             for mov in moves :
                 self.board.apply(mov)
-                v = min(v, self.alphabeta(alpha, beta, level - 1, self.switch_player(player), weights))
+                v = min(v, self.alphabeta(alpha, beta, level - 1, self._switch_player(player), weights))
                 self.board.undo_last()
                 if v <= alpha :
                     return v
