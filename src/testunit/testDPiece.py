@@ -1,7 +1,7 @@
 '''
 Created on Jul 29, 2011
 
-@author: davide
+@author: Davide Aversa
 '''
 import unittest
 from draughtscore.DBoard import DBoard
@@ -62,6 +62,7 @@ class TestDPiece(unittest.TestCase):
         self.assert_(self.piece.is_king)
         
     def testPossibleAction(self):
+        '''Check if possible_action find all possible actions.'''
         action = self.piece.possible_action()
         self.assertEqual(len(action), 0, "Action list should be empty.")
         # TODO: Maybe can I expand this test. 

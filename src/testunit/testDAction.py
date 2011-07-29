@@ -1,7 +1,7 @@
 '''
 Created on Jul 29, 2011
 
-@author: davide
+@author: Davide Aversa
 '''
 import unittest
 from draughtscore.DAction import DAction
@@ -23,6 +23,7 @@ class TestDAction(unittest.TestCase):
         del self.action_capture
 
     def testUndo(self):
+        '''Check if undo returns a well-formed undo-action.'''
         undo_move = self.action_move.undo()
         undo_promote = self.action_promote.undo()
         undo_capture = self.action_capture.undo()
@@ -32,6 +33,7 @@ class TestDAction(unittest.TestCase):
         self.assertEqual(undo_capture.captured,'DUMMY')
     
     def testEquality(self):
+        '''Check equality of two pieces.'''
         self.assertEqual(self.action_move, self.action_move_bis, "Woops! Not Equal.")
 
 

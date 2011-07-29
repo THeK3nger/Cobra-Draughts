@@ -1,7 +1,7 @@
 '''
 Created on Jul 29, 2011
 
-@author: davide
+@author: Davide Aversa
 '''
 import unittest
 from draughtscore.DBoard import DBoard
@@ -18,18 +18,22 @@ class TestDBoard(unittest.TestCase):
         del self.board
 
     def testSetBitMap(self):
+        '''Check correct behavior of set_bitmap method.'''
         self.board.set_bitmap(0, 1, 'DUMMY')
         self.assertEqual(self.board.get_piece(0, 1), 'DUMMY', "DUMMY Isn't where it should...")
 
     def testIsFree(self):
+        '''Check if is_free recognizes free squares as free squares.'''
         self.assert_(self.board.is_free(4, 1))
         self.assert_(not self.board.is_free(0, 1))
         
     def testGetPiece(self):
+        '''Check if get_piece returns right piece.'''
         self.board.set_bitmap(0, 1, 'DUMMY')
         self.assertEqual(self.board.get_piece(0, 1), 'DUMMY', "DUMMY Isn't where it should...")
         
     def testApply(self):
+        '''Check if apply applies action in a correct way.'''
         piece = self.board.get_piece(0, 1)
         action = DAction('MOVE', (0,1), (4,1))
         self.board.apply(action)
