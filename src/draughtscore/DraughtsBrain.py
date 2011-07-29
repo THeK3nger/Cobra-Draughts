@@ -4,6 +4,7 @@ Created on Jul 21, 2011
 @author: Davide Aversa
 '''
 from draughtscore.DBoard import DBoard
+import random
 
 class DraughtsBrain(object):
     '''
@@ -80,21 +81,25 @@ class DraughtsBrain(object):
         to minimize the number of explored nodes.
         
         RETURN:
-            @return: The best move.
+            @return: A list of best move.
         '''
         self.path = []
         if self.turn == 'LIGHT' :
             value = self.alphabeta(-float('inf'), float('inf'), self.horizon, self.turn, self.weights)
         else :
             value = self.alphabeta(-float('inf'), float('inf'), self.horizon, self.turn, self.weights_bis)
+        
+        bestmoves = []
+        
         for element in self.path :
             if element[1] == value : # Find path with value equal to best-value.
-                print(self.turn + " :: " + str(element[0]))
-                return element[0]
+                bestmoves.append(element[0])
         else :
-            if len(self.path) != 0 : # If path is not empty return first value.
+            if len(bestmoves) == 0 and len(self.path) != 0 : # If path is not empty return first value.
+                print("Woops!")
                 return self.path[0][0] # WARNING: This code should never be executed.
-        return None
+        
+        return bestmoves
             
     def ask_move(self):
         '''
@@ -110,10 +115,11 @@ class DraughtsBrain(object):
         win = 0
         no_capt_count = 0
         while not gameover and no_capt_count < 80 :
-            move = self.best_move()
-            if not move :
+            moves = self.best_move()
+            if not moves :
                 break
-            self.apply_move(move)
+            selected_move = random.choice(moves) # Random Move Choice among `moves`.
+            self.apply_move(selected_move)
             if len(self.board.light_pieces) == 0 :
                 gameover = True
                 win = -1
@@ -122,7 +128,7 @@ class DraughtsBrain(object):
                 win = 1
             else :
                 self.switch_turn()
-                if move.type != 'CAPTURE' :
+                if selected_move.type != 'CAPTURE' :
                     no_capt_count += 1
                 else :
                     no_capt_count = 0
