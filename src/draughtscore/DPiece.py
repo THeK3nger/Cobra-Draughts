@@ -41,7 +41,7 @@ class DPiece(object):
         Get Features List. See DBoard total score for all Features List.
         '''
         features_list = []
-        if self.is_king : # FIXME: Should be NOT.
+        if not self.is_king : 
             features_list.append('PIECE')
             if self.position[0] < 4 :
                 if self.color == 'LIGHT' :

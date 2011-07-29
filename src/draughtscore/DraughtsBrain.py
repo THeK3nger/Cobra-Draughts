@@ -19,7 +19,7 @@ class DraughtsBrain(object):
         
         There are two match type:
             * AI -> AI vs AI
-            * PLAYER -> AI vs Player [ TODO: ]
+            * PLAYER -> AI vs Player
             
         ARGS:
             @param type: Match type.
@@ -134,7 +134,7 @@ class DraughtsBrain(object):
         '''
         Execute Human vs AI match.
         
-        TODO:
+        TODO: Human Interaction
         '''
         gameover = False
         while not gameover :

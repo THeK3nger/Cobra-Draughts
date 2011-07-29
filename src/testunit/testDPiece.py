@@ -5,6 +5,7 @@ Created on Jul 29, 2011
 '''
 import unittest
 from draughtscore.DBoard import DBoard
+from draughtscore.DAction import DAction
 
 
 class TestDPiece(unittest.TestCase):
@@ -36,6 +37,7 @@ class TestDPiece(unittest.TestCase):
         self.assert_('BACK' in  flist, "BACK is not in list!")
         self.assert_('PIECE' in  flist, "PIECE is not in list!")
         self.piece.promote()
+        flist = self.piece.get_features()
         self.assert_(self.piece.is_king, "Piece Must Be King.")
         self.assert_('KBACK' in  flist, "KBACK is not in list!")
         self.assert_('KING' in  flist, "KING is not in list!")
@@ -55,14 +57,15 @@ class TestDPiece(unittest.TestCase):
         
     def testActionPromotion(self):
         '''Check promotion action.'''
-        self.piece.move(9,0)
+        action = DAction('MOVE', (0,1), (9,1), promote=True)
+        self.board.apply(action)
         self.assert_(self.piece.is_king)
         
     def testPossibleAction(self):
         action = self.piece.possible_action()
         self.assertEqual(len(action), 0, "Action list should be empty.")
         # TODO: Maybe can I expand this test. 
-        # This test is a bit optimistic... :D 
+        # It is a bit optimistic... :D 
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
