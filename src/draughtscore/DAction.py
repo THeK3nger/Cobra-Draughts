@@ -30,9 +30,9 @@ class DAction(object):
         self.destination = destination
         self.captured = captured
         self.promote = promote
-        self.next = None # Next Capture if `CAPTURE` isa a Chain-Capture.
+        self.next = None # Next Capture if `CAPTURE` is a Chain-Capture.
     
-    def _append_capture(self,action):
+    def _append_capture(self, action):
         '''
         Append an item in Chain-Captures at the end of chain.
         
@@ -61,6 +61,9 @@ class DAction(object):
         undo_rest._append_capture(undo_this)
         return undo_rest
     
+    def copy(self):
+        return DAction(self.type,self.source,self.destination,self.captured,self.promote)
+    
     def __eq__(self, other):
         if other == None :
             return False
@@ -74,11 +77,14 @@ class DAction(object):
             return False
         return True
         
+    def __repr__(self):
+        return self.__str__()
     
     def __str__(self):
-        return "%s :: <%d , %d> -> <%d , %d>" % (self.type, self.source[0], \
+        return "%s :: <%d , %d> -> <%d , %d> { %s }" % (self.type, self.source[0], \
                                                  self.source[1], self.destination[0], \
-                                                 self.destination[1])
+                                                 self.destination[1], \
+                                                 str(self.next))
     
     
         

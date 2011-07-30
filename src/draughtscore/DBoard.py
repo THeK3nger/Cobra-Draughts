@@ -111,15 +111,20 @@ class DBoard(object):
         '''
         return self.bitmap[self.__cord2idx(row, column)]
     
-    def apply(self, action):
+    def apply(self, action, chain=False):
         '''
         Apply an action to the board.
         
+        Note that in Chain-Capture *only* the first step must be recorded
+        in board undo-stack. So use the `chain` flag to apply chain next
+        steps.
+        
         ARGS:
             @param action: Action to apply. 
+            @param chain: True if action is one step of a chain action.
         '''
         # If ACTION is UNDO-type DO NOT add to undo-list.
-        if action.type != 'UNDO' :
+        if action.type != 'UNDO' and not chain :
             self.movelist.append(action)
             
         # Get Source and Destination.
@@ -138,7 +143,7 @@ class DBoard(object):
         if action.promote :
             piece.promote()
         
-        if action.type == 'CAPTURE' :
+        if action.type == 'CAPTURE' or action.type == 'CHAIN' :
             # If action is CAPTURE-type get captured piece. 
             captured = action.captured
             captured.captured() #Remove captured piece from board.
@@ -159,6 +164,10 @@ class DBoard(object):
             # then piece must be demoted.
             if action.promote :
                 piece.demote()
+        
+        # If chain-capture (or chain-undo) apply next step.
+        if action.next :
+            self.apply(action.next,chain=True) # Record only the first step.
         
     def all_move(self, color):
         '''
@@ -183,6 +192,7 @@ class DBoard(object):
         for m in move :
             if m.type == 'CAPTURE' :
                 capture = True
+                break
         
         # If this action exist then NO OTHER ACTIONS are allowed.
         # So we remove all action that are not CAPTURE-type.

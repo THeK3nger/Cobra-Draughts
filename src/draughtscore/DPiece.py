@@ -130,7 +130,17 @@ class DPiece(object):
             move_new = []
             for m in move :
                 if m.type == 'CAPTURE' :
-                    move_new.append(m)
+                    # Check for chain captures.
+                    self.board.apply(m)
+                    next_steps = self.possible_action()
+                    self.board.undo_last()
+                    if next_steps and next_steps[0].type == 'CAPTURE' :
+                        for step in next_steps :
+                            tmp = m.copy()
+                            tmp.next = step
+                            move_new.append(tmp)
+                    else :
+                        move_new.append(m)
             return move_new
         else :
             return move
@@ -160,7 +170,17 @@ class DPiece(object):
             move_new = []
             for m in move :
                 if m.type == 'CAPTURE' :
-                    move_new.append(m)
+                    # Check for chain captures.
+                    self.board.apply(m)
+                    next_steps = self.possible_action()
+                    self.board.undo_last()
+                    if next_steps and next_steps[0].type == 'CAPTURE' :
+                        for step in next_steps :
+                            tmp = m.copy()
+                            tmp.next = step
+                            move_new.append(tmp)
+                    else :
+                        move_new.append(m)
             return move_new
         return move
                 
