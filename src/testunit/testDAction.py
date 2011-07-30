@@ -15,9 +15,9 @@ class TestDAction(unittest.TestCase):
         self.action_move_bis = DAction('MOVE', (0, 1), (1, 2))
         self.action_promote = DAction('MOVE', (0, 1), (1, 2), promote=True)
         self.action_capture = DAction('CAPTURE', (0, 1), (2, 3), captured='DUMMY')
-        self.action_chain = DAction('CHAIN', (0, 1), (1, 2))
-        self.action_chain.next = DAction('CHAIN', (1, 2), (2, 3))
-        self.action_chain.next.next = DAction('CHAIN', (2, 3), (3, 4))
+        self.action_chain = DAction('CAPTURE', (0, 1), (1, 2))
+        self.action_chain.next = DAction('CAPTURE', (1, 2), (2, 3))
+        self.action_chain.next.next = DAction('CAPTURE', (2, 3), (3, 4))
 
 
     def tearDown(self):

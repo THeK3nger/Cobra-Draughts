@@ -10,9 +10,8 @@ class DAction(object):
     
     Exists three type of action:
         * MOVE : Standard Move
-        * CAPTURE : Capture Enemy Piece
+        * CAPTURE : Capture Enemy Piece - Can be a Chain Capture.
         * UNDO : Undo Move
-        * CHAIN : Chain Captures
     '''
 
 
@@ -31,33 +30,7 @@ class DAction(object):
         self.destination = destination
         self.captured = captured
         self.promote = promote
-        self.next = None # Next Capture in `CHAIN`.
-        
-    def _undochain(self):
-        '''
-        Returns Undo-Action for `CHAIN` one.
-        
-        RETURN:
-            @return: Undo-Action for Chain-Captures.
-        '''
-        if self.next == None : # Last element.
-            return self._raw_undo()
-        
-        undo_rest = self.next._undochain() # Invert chain tail.
-        undo_this = self._raw_undo() # Invert current step.
-        undo_rest._append_capture(undo_this)
-        return undo_rest
-    
-    def _raw_undo(self):
-        '''
-        Return Raw-Undo-Action.
-        
-        Don't check difference between MOVE, CAPTURE and CHAIN.
-        
-        RETURN :
-            @return: Undo Action.
-        '''
-        return DAction('UNDO', self.destination, self.source, self.captured, self.promote)
+        self.next = None # Next Capture if `CAPTURE` isa a Chain-Capture.
     
     def _append_capture(self,action):
         '''
@@ -78,10 +51,15 @@ class DAction(object):
         RETURN:
             @return: Undo Action
         '''
-        if self.type == 'CHAIN' :
-            return self._undochain()
-        else :
-            return self._raw_undo()
+        raw_undo = DAction('UNDO', self.destination, self.source, self.captured, self.promote)
+        
+        if self.next == None : # Last element.
+            return raw_undo
+        
+        undo_rest = self.next.undo() # Invert chain tail.
+        undo_this = raw_undo # Invert current step.
+        undo_rest._append_capture(undo_this)
+        return undo_rest
     
     def __eq__(self, other):
         if other == None :
