@@ -139,8 +139,8 @@ class DBoard(object):
         
         piece.move(drow, dcol) #Move piece in destination.
         
-        # Check Promotion
-        if action.promote :
+        # Check Promotion: Promote only if `action` is a final-step.
+        if action.promote and not action.next :
             piece.promote()
         
         if action.type == 'CAPTURE' or action.type == 'CHAIN' :

@@ -13,9 +13,8 @@ However it's perfectly suitable for *AI vs. Human* match.
 Cobra Draughts is not complete yet. I have written a list of know issues and 
 missing features that I want to solve quickly.
 
-1. The "chain-capture" is not legal yet. It is the biggest issue.
-2. There is no way to ask move to user.
-3. There is no practical way to handle match move and result. 
+1. There is no way to ask move to user.
+2. There is no practical way to handle match move and result. 
 
 ## License
 

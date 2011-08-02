@@ -81,7 +81,7 @@ class DraughtsBrain(object):
         to minimize the number of explored nodes.
         
         RETURN:
-            @return: A list of best move.
+            @return: One of the best move.
         '''
         self.path = []
         if self.turn == 'LIGHT' :
@@ -99,7 +99,8 @@ class DraughtsBrain(object):
                 print("Woops!")
                 return self.path[0][0] # WARNING: This code should never be executed.
         
-        return bestmoves
+        selected_move = random.choice(bestmoves) # Select randomly a move among the best ones.
+        return selected_move
             
     def ask_move(self):
         '''
@@ -115,11 +116,10 @@ class DraughtsBrain(object):
         win = 0
         no_capt_count = 0
         while not gameover and no_capt_count < 80 :
-            moves = self.best_move()
-            if not moves :
+            bestmove = self.best_move()
+            if not bestmove :
                 break
-            selected_move = random.choice(moves) # Random Move Choice among `moves`.
-            self.apply_move(selected_move)
+            self.apply_move(bestmove)
             if len(self.board.light_pieces) == 0 :
                 gameover = True
                 win = -1
@@ -128,7 +128,7 @@ class DraughtsBrain(object):
                 win = 1
             else :
                 self.switch_turn()
-                if selected_move.type != 'CAPTURE' :
+                if bestmove.type != 'CAPTURE' :
                     no_capt_count += 1
                 else :
                     no_capt_count = 0
