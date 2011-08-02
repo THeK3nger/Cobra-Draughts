@@ -13,41 +13,37 @@ class DraughtsBrain(object):
     Use Min-Max with Alpha-Beta Prune.
     '''
 
-
-    def __init__(self, type, weights, horizon, weights_bis=None):
+    def __init__(self, weights, horizon, weights_bis=None):
         '''
         Constructor
-        
-        There are two match type:
-            * AI -> AI vs AI
-            * PLAYER -> AI vs Player
             
         ARGS:
-            @param type: Match type.
             @param weights: Weights for board Static-Evaluation-Function.
             @param horizon: Max level for the search algorithm. 
             @param weights_bis: Weights for the dark-side AI. 
         '''
-        self.type = type
         self.weights = weights
         self.horizon = horizon
         
         self.move = 0
         self.board = DBoard()
         self.turn = 'LIGHT'
+        
+        self.gameover = False
+        self.winner = None
+        self.nocapturecounter = 0 # Move without a capture.
+        
         if weights_bis == None :
             self.weights_bis = self.weights
         else :
-            self.weights_bis = weights_bis
-        
-    def run(self):
-        '''
-        Start the match according to type.
-        '''
-        if self.type == 'PLAYER' :
-            self.run_player()
-        elif self.type == 'AI' :
-            self.run_ai()
+            self.weights_bis = weights_bis            
+    
+    def reset(self):
+        self.move = 0
+        self.board = DBoard()
+        self.turn = 'LIGHT'
+        self.gameover = False
+        self.nocapturecounter = 0
     
     def switch_turn(self):
         '''
@@ -72,6 +68,48 @@ class DraughtsBrain(object):
             return 'DARK'
         else :
             return 'LIGHT'
+               
+    def run_self(self):
+        '''
+        Execute "selfish" AI vs. AI match.
+        '''
+        self.gameover = False
+        while not self.gameover and self.nocapturecounter < 50 :
+            bestmove = self.best_move()
+            if not bestmove :
+                self.winner = self._switch_player(self.turn) # No valid move!
+                break
+            self.apply_move(bestmove)
+            print(self.board)
+        if not self.gameover :
+            self.winner = 'DRAW'
+        return self.winner
+                
+    def apply_move(self, action):
+        '''
+        Apply an action to board.
+        
+        ARGS:
+            @param action: Action that it's going to be executed.
+        '''
+        self.board.apply(action)
+        self.move += 1
+        if len(self.board.light_pieces) == 0 :
+            self.gameover = True
+            self.winner = 'DARK'
+        elif len(self.board.dark_pieces) == 0 :
+            self.gameover = True
+            self.winner = 'LIGHT'
+        else :
+            self.switch_turn()
+            if action.type != 'CAPTURE' :
+                self.nocapturecounter += 1
+            else :
+                self.nocapturecounter = 0        
+                
+    ########
+    ## AI ##
+    ########
     
     def best_move(self):
         '''
@@ -101,62 +139,6 @@ class DraughtsBrain(object):
         
         selected_move = random.choice(bestmoves) # Select randomly a move among the best ones.
         return selected_move
-            
-    def ask_move(self):
-        '''
-        Get move from human user.
-        '''
-        pass
-    
-    def run_ai(self):
-        '''
-        Execute AI vs AI match.
-        '''
-        gameover = False
-        win = 0
-        no_capt_count = 0
-        while not gameover and no_capt_count < 80 :
-            bestmove = self.best_move()
-            if not bestmove :
-                break
-            self.apply_move(bestmove)
-            if len(self.board.light_pieces) == 0 :
-                gameover = True
-                win = -1
-            elif len(self.board.dark_pieces) == 0 :
-                gameover = True
-                win = 1
-            else :
-                self.switch_turn()
-                if bestmove.type != 'CAPTURE' :
-                    no_capt_count += 1
-                else :
-                    no_capt_count = 0
-            print(self.board)
-        print win
-            
-    
-    def run_player(self):
-        '''
-        Execute Human vs AI match.
-        
-        TODO: Human Interaction
-        '''
-        gameover = False
-        while not gameover :
-            if self.turn == 'LIGHT' :
-                pass
-                #self.ask_move()
-                
-    def apply_move(self, action):
-        '''
-        Apply an action to board.
-        
-        ARGS:
-            @param action: Action that it's going to be executed.
-        '''
-        self.board.apply(action)
-        self.move += 1
                 
     def alphabeta(self, alpha, beta, level, player, weights):
         '''

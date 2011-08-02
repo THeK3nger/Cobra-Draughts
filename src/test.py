@@ -16,5 +16,7 @@ weights = {'PIECE':10,
           'KFRONT':2,
           'MOB':0}
 
-D = DraughtsBrain('AI',weights,4)
-D.run()
+D = DraughtsBrain(weights,4)
+D.run_self()
+
+print "The winner is %s!" % D.winner

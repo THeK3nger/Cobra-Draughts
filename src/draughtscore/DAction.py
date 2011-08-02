@@ -64,6 +64,11 @@ class DAction(object):
     def copy(self):
         return DAction(self.type,self.source,self.destination,self.captured,self.promote)
     
+    def __len__(self):
+        if self.next :
+            return 1 + len(self.next)
+        return 1
+    
     def __eq__(self, other):
         if other == None :
             return False

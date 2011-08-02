@@ -147,7 +147,7 @@ class DBoard(object):
             # If action is CAPTURE-type get captured piece. 
             captured = action.captured
             captured.captured() #Remove captured piece from board.
-            if captured.color == 'LIGHT' : #... and fron right list.
+            if captured.color == 'LIGHT' : #... and from right list.
                 self.light_pieces.remove(captured)
             else :
                 self.dark_pieces.remove(captured)
