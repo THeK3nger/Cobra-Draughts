@@ -80,7 +80,7 @@ class DraughtsBrain(object):
                 self.winner = self._switch_player(self.turn) # No valid move!
                 break
             self.apply_move(bestmove)
-            print(self.board)
+            #print(self.board)
         if not self.gameover :
             self.winner = 'DRAW'
         return self.winner
@@ -121,6 +121,9 @@ class DraughtsBrain(object):
         RETURN:
             @return: One of the best move.
         '''
+        if len(self.board.all_move(self.turn)) == 0 :
+            return None
+            
         self.path = []
         if self.turn == 'LIGHT' :
             value = self.alphabeta(-float('inf'), float('inf'), self.horizon, self.turn, self.weights)
