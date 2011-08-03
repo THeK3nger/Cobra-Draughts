@@ -167,7 +167,7 @@ class DBoard(object):
         
         # If chain-capture (or chain-undo) apply next step.
         if action.next :
-            self.apply(action.next,chain=True) # Record only the first step.
+            self.apply(action.next, chain=True) # Record only the first step.
         
     def all_move(self, color):
         '''
@@ -203,7 +203,7 @@ class DBoard(object):
                     move_new.append(m)
             return move_new
         else :
-            return move
+            return move    
                 
     def board_score(self, weights):
         '''
@@ -232,16 +232,14 @@ class DBoard(object):
             features = piece.get_features()
             for f in features :
                 vlight[f] += 1
+                
         for piece in self.dark_pieces :
             features = piece.get_features()
             for f in features :
                 vdark[f] += 1
-                
-        score_light = 0
-        score_dark = 0
-        for key in vlight.keys() : # Calculate weighted sum of features.
-            score_light += vlight[key] * weights[key]
-            score_dark += vdark[key] * weights[key]
+            
+        score_light = sum([vlight[key] * weights[key] for key in weights.iterkeys()])
+        score_dark = sum([vdark[key] * weights[key] for key in weights.iterkeys()])
         
         return score_light - score_dark # Return difference.
     

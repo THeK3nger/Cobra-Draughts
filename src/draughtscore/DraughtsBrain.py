@@ -33,6 +33,8 @@ class DraughtsBrain(object):
         self.winner = None
         self.nocapturecounter = 0 # Move without a capture.
         
+        self.verbose = False
+        
         if weights_bis == None :
             self.weights_bis = self.weights
         else :
@@ -74,14 +76,16 @@ class DraughtsBrain(object):
         Execute "selfish" AI vs. AI match.
         '''
         self.gameover = False
-        while not self.gameover and self.nocapturecounter < 50 :
+        while not self.gameover and self.nocapturecounter < 100 :
             bestmove = self.best_move()
             if not bestmove :
                 self.winner = self._switch_player(self.turn) # No valid move!
                 break
             self.apply_move(bestmove)
-            #print(self.board)
-        if not self.gameover :
+            if self.verbose : 
+                print(self.board)
+                print(self.board.board_score(self.weights))
+        if not self.gameover : # So, too-much noncapture.
             self.winner = 'DRAW'
         return self.winner
                 
@@ -122,6 +126,8 @@ class DraughtsBrain(object):
             @return: One of the best move.
         '''
         if len(self.board.all_move(self.turn)) == 0 :
+            self.gameover = True
+            self.winner = self._switch_player(self.turn)
             return None
             
         self.path = []

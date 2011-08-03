@@ -6,17 +6,28 @@ Created on Jul 22, 2011
 
 from draughtscore.DraughtsBrain import DraughtsBrain
 
-weights = {'PIECE':10,
-          'KING':30,
-          'BACK':1,
-          'KBACK':1,
-          'CENTER':1,
-          'KCENTER':1,
-          'FRONT':2,
-          'KFRONT':2,
+weights1 = {'PIECE':400,
+          'KING':1200,
+          'BACK':10,
+          'KBACK':10,
+          'CENTER':30,
+          'KCENTER':30,
+          'FRONT':60,
+          'KFRONT':60,
           'MOB':0}
 
-D = DraughtsBrain(weights,4)
+weights2 = {'PIECE':400,
+          'KING':800,
+          'BACK':40,
+          'KBACK':40,
+          'CENTER':40,
+          'KCENTER':40,
+          'FRONT':60,
+          'KFRONT':60,
+          'MOB':0}
+
+D = DraughtsBrain(weights1,2,weights2)
+D.verbose = False
 D.run_self()
 
 print "The winner is %s!" % D.winner

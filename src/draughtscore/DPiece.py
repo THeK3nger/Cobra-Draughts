@@ -41,32 +41,33 @@ class DPiece(object):
         Get Features List. See DBoard total score for all Features List.
         '''
         features_list = []
+        color =  self.color
         if not self.is_king : 
-            features_list.append('PIECE')
+            features_list = ['PIECE']
             if self.position[0] < 4 :
-                if self.color == 'LIGHT' :
-                    features_list.append('FRONT')
+                if color == 'LIGHT' :
+                    features_list = ['PIECE','FRONT']
                 else :
-                    features_list.append('BACK')
+                    features_list = ['PIECE','BACK']
             if self.position[0] >= 6 :
-                if self.color == 'LIGHT':
-                    features_list.append('BACK')
+                if color == 'LIGHT':
+                    features_list = ['PIECE','BACK']
                 else :
-                    features_list.append('FRONT')
+                    features_list = ['PIECE','FRONT']
             if (2 <= self.position[0] < 8) and (2 <= self.position[1] < 8) :
                 features_list.append('CENTER')
         else :
-            features_list.append('KING')
+            features_list = ['KING']
             if self.position[0] < 4 :
-                if self.color == 'LIGHT' :
-                    features_list.append('KFRONT')
+                if color == 'LIGHT' :
+                    features_list = ['KING','KFRONT']
                 else :
-                    features_list.append('KBACK')
+                    features_list = ['KING','KBACK']
             if self.position[0] >= 6 :
-                if self.color == 'LIGHT':
-                    features_list.append('KBACK')
+                if color == 'LIGHT':
+                    features_list = ['KING','KBACK']
                 else :
-                    features_list.append('KFRONT')
+                    features_list = ['KING','KFRONT']
             if (2 <= self.position[0] < 8) and (2 <= self.position[1] < 8) :
                 features_list.append('KCENTER')
         return features_list
@@ -192,6 +193,5 @@ class DPiece(object):
             return self._possible_action_king()
         else :
             return self._possible_action_piece()
-            
-    
+
                 
