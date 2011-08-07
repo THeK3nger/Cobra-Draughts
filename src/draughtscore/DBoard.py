@@ -24,7 +24,7 @@ class DBoard(object):
         row = 0
         column = 1
         delta = 1
-        for _ in range(20) :
+        for _ in xrange(20) :
             new_piece = DPiece(self, row, column, 'DARK')
             self.dark_pieces.append(new_piece)
             self.set_bitmap(row, column, new_piece)
@@ -38,7 +38,7 @@ class DBoard(object):
         row = 6
         column = 1
         delta = 1
-        for _ in range(20) :
+        for _ in xrange(20) :
             new_piece = DPiece(self, row, column, 'LIGHT')
             self.light_pieces.append(new_piece)
             self.set_bitmap(row, column, new_piece)
@@ -254,8 +254,8 @@ class DBoard(object):
             
     def __str__(self):
         string = ""
-        for row in range(10) :
-            for column in range(10) :
+        for row in xrange(10) :
+            for column in xrange(10) :
                 if ((row % 2 == 0) != (column % 2 == 0)) :
                     idx = self.__cord2idx(row, column)
                     if self.bitmap[idx] == None :
