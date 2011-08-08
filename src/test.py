@@ -26,7 +26,7 @@ weights2 = {'PIECE':400,
           'KFRONT':60,
           'MOB':0}
 
-D = DraughtsBrain(weights1,2,weights2)
+D = DraughtsBrain(weights1, 2, weights2)
 D.verbose = False
 D.run_self()
 

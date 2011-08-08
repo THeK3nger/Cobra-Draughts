@@ -21,13 +21,13 @@ class TestDPiece(unittest.TestCase):
     def testPromotion(self):
         '''Check for piece promotion.'''
         self.piece.promote()
-        self.assert_(self.piece.is_king,"Piece DO NOT PROMOTE!")
+        self.assert_(self.piece.is_king, "Piece DO NOT PROMOTE!")
         
     def testDemotion(self):
         '''Check for piece demotion.'''
         self.piece.promote()
         self.piece.demote()
-        self.assert_(not self.piece.is_king,"Piece DO NOT DEMOTE!")
+        self.assert_(not self.piece.is_king, "Piece DO NOT DEMOTE!")
         
     def testGetFeatures(self):
         '''Check for piece features.'''
@@ -44,8 +44,8 @@ class TestDPiece(unittest.TestCase):
     
     def testMove(self):
         '''Test Move. It's not a legal move but don't matter.'''
-        target_pos = (5,6)
-        self.piece.move(5,6)
+        target_pos = (5, 6)
+        self.piece.move(5, 6)
         self.assertEqual(self.piece.position, target_pos)
         self.assert_(self.board.is_free(0, 1))
         self.assertEqual(self.piece, self.board.get_piece(5, 6))
@@ -57,7 +57,7 @@ class TestDPiece(unittest.TestCase):
         
     def testActionPromotion(self):
         '''Check promotion action.'''
-        action = DAction('MOVE', (0,1), (9,1), promote=True)
+        action = DAction('MOVE', (0, 1), (9, 1), promote=True)
         self.board.apply(action)
         self.assert_(self.piece.is_king)
         

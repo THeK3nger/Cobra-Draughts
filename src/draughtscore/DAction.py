@@ -62,7 +62,7 @@ class DAction(object):
         return undo_rest
     
     def copy(self):
-        return DAction(self.type,self.source,self.destination,self.captured,self.promote)
+        return DAction(self.type, self.source, self.destination, self.captured, self.promote)
     
     def __len__(self):
         if self.next :

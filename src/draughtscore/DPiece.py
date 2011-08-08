@@ -41,34 +41,34 @@ class DPiece(object):
         Get Features List. See DBoard total score for all Features List.
         '''
         features_list = []
-        color =  self.color
-        row,column = self.position
+        color = self.color
+        row, column = self.position
         if not self.is_king : 
             features_list = ['PIECE']
             if row < 4 :
                 if color == 'LIGHT' :
-                    features_list = ['PIECE','FRONT']
+                    features_list = ['PIECE', 'FRONT']
                 else :
-                    features_list = ['PIECE','BACK']
+                    features_list = ['PIECE', 'BACK']
             if row >= 6 :
                 if color == 'LIGHT':
-                    features_list = ['PIECE','BACK']
+                    features_list = ['PIECE', 'BACK']
                 else :
-                    features_list = ['PIECE','FRONT']
+                    features_list = ['PIECE', 'FRONT']
             if (2 <= row < 8) and (2 <= column < 8) :
                 features_list.append('CENTER')
         else :
             features_list = ['KING']
             if row < 4 :
                 if color == 'LIGHT' :
-                    features_list = ['KING','KFRONT']
+                    features_list = ['KING', 'KFRONT']
                 else :
-                    features_list = ['KING','KBACK']
+                    features_list = ['KING', 'KBACK']
             if row >= 6 :
                 if color == 'LIGHT':
-                    features_list = ['KING','KBACK']
+                    features_list = ['KING', 'KBACK']
                 else :
-                    features_list = ['KING','KFRONT']
+                    features_list = ['KING', 'KFRONT']
             if (2 <= row < 8) and (2 <= column < 8) :
                 features_list.append('KCENTER')
         return features_list
@@ -96,7 +96,7 @@ class DPiece(object):
         '''
         self.board.set_bitmap(self.position[0], self.position[1], None)
         
-    def _check_promote(self,drow):
+    def _check_promote(self, drow):
         '''
         Check if, in one action, piece become King.
         '''
@@ -127,7 +127,7 @@ class DPiece(object):
             if is_free(row + dr, col + dc) :
                 if not capture :
                     prom = self._check_promote(row + dr)
-                    move.append(DAction('MOVE', (row, col), (row + dr, col + dc),promote=prom))
+                    move.append(DAction('MOVE', (row, col), (row + dr, col + dc), promote=prom))
             elif is_free(row + 2 * dr, col + 2 * dc) :
                 obstruction = board.get_piece(row + dr, col + dc)
                 if obstruction.color != self.color :

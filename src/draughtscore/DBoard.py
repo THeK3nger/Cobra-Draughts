@@ -62,7 +62,7 @@ class DBoard(object):
         '''
         # If row%2 == 0 (column-1)/2 else column/2
         # This should be equivalent...
-        return 5 * row + column/2
+        return 5 * row + column / 2
             
     def set_bitmap(self, row, column, value):
         '''
