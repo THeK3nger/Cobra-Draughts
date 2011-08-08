@@ -60,12 +60,9 @@ class DBoard(object):
         RETURNS:
             @return: Index of <row,column> square in bitmap.
         '''
-        idx = 5 * row
-        if row % 2 == 0 :
-            idx += (column - 1) / 2
-        else :
-            idx += column / 2
-        return idx
+        # If row%2 == 0 (column-1)/2 else column/2
+        # This should be equivalent...
+        return 5 * row + column/2
             
     def set_bitmap(self, row, column, value):
         '''
@@ -89,14 +86,15 @@ class DBoard(object):
         RETURN:
             @return: True if square is free and on board.
         '''
-        if (0 <= row < 10) and (0 <= column < 10) :
-            idx = self.__cord2idx(row, column)
-            if self.bitmap[idx] == None :
-                return True
-            else :
-                return False
-        else :
+        if row < 0 or row >= 10 :
             return False
+        if column < 0 or column >= 10 :
+            return False
+ 
+        if self.bitmap[self.__cord2idx(row, column)] :
+            return False
+        
+        return True
         
     def get_piece(self, row, column):
         '''
@@ -215,6 +213,10 @@ class DBoard(object):
         RETURN:
             @return: The board score.
         '''
+        ## Avoid Frequent Look-Up
+        ##
+        get_features = DPiece.get_features
+        ##
         vlight = {'PIECE':0,
           'KING':0,
           'BACK':0,
@@ -229,12 +231,12 @@ class DBoard(object):
         
         # For each piece, for each feature add the total counter.
         for piece in self.light_pieces :
-            features = piece.get_features()
+            features = get_features(piece)
             for f in features :
                 vlight[f] += 1
                 
         for piece in self.dark_pieces :
-            features = piece.get_features()
+            features = get_features(piece)
             for f in features :
                 vdark[f] += 1
             

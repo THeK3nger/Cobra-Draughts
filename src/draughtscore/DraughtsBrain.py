@@ -76,7 +76,7 @@ class DraughtsBrain(object):
         Execute "selfish" AI vs. AI match.
         '''
         self.gameover = False
-        while not self.gameover and self.nocapturecounter < 100 :
+        while not self.gameover and self.nocapturecounter < 50 :
             bestmove = self.best_move()
             if not bestmove :
                 self.winner = self._switch_player(self.turn) # No valid move!

@@ -30,7 +30,9 @@ class TestDBoard(unittest.TestCase):
     def testGetPiece(self):
         '''Check if get_piece returns right piece.'''
         self.board.set_bitmap(0, 1, 'DUMMY')
+        self.board.set_bitmap(4, 3, 'DUMMY')
         self.assertEqual(self.board.get_piece(0, 1), 'DUMMY', "DUMMY Isn't where it should...")
+        self.assertEqual(self.board.get_piece(4, 3), 'DUMMY', "DUMMY Isn't where it should...")
         
     def testApply(self):
         '''Check if apply applies action in a correct way.'''

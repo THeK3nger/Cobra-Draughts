@@ -42,33 +42,34 @@ class DPiece(object):
         '''
         features_list = []
         color =  self.color
+        row,column = self.position
         if not self.is_king : 
             features_list = ['PIECE']
-            if self.position[0] < 4 :
+            if row < 4 :
                 if color == 'LIGHT' :
                     features_list = ['PIECE','FRONT']
                 else :
                     features_list = ['PIECE','BACK']
-            if self.position[0] >= 6 :
+            if row >= 6 :
                 if color == 'LIGHT':
                     features_list = ['PIECE','BACK']
                 else :
                     features_list = ['PIECE','FRONT']
-            if (2 <= self.position[0] < 8) and (2 <= self.position[1] < 8) :
+            if (2 <= row < 8) and (2 <= column < 8) :
                 features_list.append('CENTER')
         else :
             features_list = ['KING']
-            if self.position[0] < 4 :
+            if row < 4 :
                 if color == 'LIGHT' :
                     features_list = ['KING','KFRONT']
                 else :
                     features_list = ['KING','KBACK']
-            if self.position[0] >= 6 :
+            if row >= 6 :
                 if color == 'LIGHT':
                     features_list = ['KING','KBACK']
                 else :
                     features_list = ['KING','KFRONT']
-            if (2 <= self.position[0] < 8) and (2 <= self.position[1] < 8) :
+            if (2 <= row < 8) and (2 <= column < 8) :
                 features_list.append('KCENTER')
         return features_list
     
@@ -108,6 +109,12 @@ class DPiece(object):
         '''
         Check for piece possible actions.
         '''
+        ## Frequent Look-Up Avoiding
+        ##
+        is_free = self.board.is_free
+        board = self.board
+        ##
+        
         move = []
         row, col = self.position
         capture = False # True if piece can capture enemy piece.
@@ -117,12 +124,12 @@ class DPiece(object):
             dr = 1  #Move DOWN
             
         for dc in (-1, 1) :
-            if self.board.is_free(row + dr, col + dc) :
+            if is_free(row + dr, col + dc) :
                 if not capture :
                     prom = self._check_promote(row + dr)
                     move.append(DAction('MOVE', (row, col), (row + dr, col + dc),promote=prom))
-            elif self.board.is_free(row + 2 * dr, col + 2 * dc) :
-                obstruction = self.board.get_piece(row + dr, col + dc)
+            elif is_free(row + 2 * dr, col + 2 * dc) :
+                obstruction = board.get_piece(row + dr, col + dc)
                 if obstruction.color != self.color :
                     prom = self._check_promote(row + 2 * dr)
                     move.append(DAction('CAPTURE', (row, col), (row + 2 * dr, col + 2 * dc), obstruction, prom))
@@ -132,9 +139,9 @@ class DPiece(object):
             for m in move :
                 if m.type == 'CAPTURE' :
                     # Check for chain captures.
-                    self.board.apply(m)
+                    board.apply(m)
                     next_steps = self.possible_action()
-                    self.board.undo_last()
+                    board.undo_last()
                     if next_steps and next_steps[0].type == 'CAPTURE' :
                         for step in next_steps :
                             tmp = m.copy()
@@ -150,6 +157,12 @@ class DPiece(object):
         '''
         Check King possible actions.
         '''
+        ## Frequent Look-Up Avoiding
+        ##
+        is_free = self.board.is_free
+        board = self.board
+        ##
+        
         move = []
         row, col = self.position
         capture = False
@@ -157,13 +170,13 @@ class DPiece(object):
         for dir in direction :
             trow = row + dir[0]
             tcol = col + dir[1]
-            while self.board.is_free(trow, tcol) :
+            while is_free(trow, tcol) :
                 if not capture :
                     move.append(DAction('MOVE', (row, col), (trow, tcol)))
                 trow += dir[0]
                 tcol += dir[1]
-            if self.board.is_free(trow + dir[0], tcol + dir[1]) :
-                obstruction = self.board.get_piece(trow, tcol)
+            if board.is_free(trow + dir[0], tcol + dir[1]) :
+                obstruction = board.get_piece(trow, tcol)
                 if obstruction.color != self.color :
                     move.append(DAction('CAPTURE', (row, col), (trow + dir[0], tcol + dir[1]), obstruction))
                     capture = True
@@ -172,9 +185,9 @@ class DPiece(object):
             for m in move :
                 if m.type == 'CAPTURE' :
                     # Check for chain captures.
-                    self.board.apply(m)
+                    board.apply(m)
                     next_steps = self.possible_action()
-                    self.board.undo_last()
+                    board.undo_last()
                     if next_steps and next_steps[0].type == 'CAPTURE' :
                         for step in next_steps :
                             tmp = m.copy()
