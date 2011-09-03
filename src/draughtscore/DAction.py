@@ -1,8 +1,34 @@
+#    This file is part of CobraDraughts.
+#
+#    CobraDraughts is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    CobraDraughts is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with CobraDraughts.  If not, see <http://www.gnu.org/licenses/>.
 '''
 Created on Jul 21, 2011
 
 @author: Davide Aversa
+@version: 1.0
+
+DAction module contains DAction class and related stuff. 
 '''
+
+__author__ = "Davide Aversa"
+__copyright__ = "Copyright 2011"
+__credits__ = ["Davide Aversa",]
+__license__ = "GPLv3"
+__version__ = "1.0"
+__maintainer__ = "Davide Aversa"
+__email__ = "thek3nger@gmail.com"
+__status__ = "Production"
 
 class DAction(object):
     '''
