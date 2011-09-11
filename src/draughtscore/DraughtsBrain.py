@@ -41,7 +41,7 @@ class DraughtsBrain(object):
     Use Min-Max with Alpha-Beta Prune.
     '''
 
-    def __init__(self, weights, horizon, weights_bis=None):
+    def __init__(self, weights, horizon, weights_bis=None,verbose=False):
         '''
         Constructor
             
@@ -61,7 +61,7 @@ class DraughtsBrain(object):
         self.winner = None
         self.nocapturecounter = 0 # Move without a capture.
         
-        self.verbose = False
+        self.verbose = verbose
         
         if weights_bis == None :
             self.weights_bis = self.weights

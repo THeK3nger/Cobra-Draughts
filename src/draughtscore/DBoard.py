@@ -45,6 +45,10 @@ class DBoard(object):
         self.dark_pieces = []
         self.bitmap = [None] * 50 # None = empty
         self.movelist = []
+        self.light_pos_moves = None
+        self.dark_pos_moves = None
+        self.light_cached = False
+        self.dark_cached = False
         
         # Add 20 Dark Piece in starting position.
         row = 0
@@ -193,6 +197,9 @@ class DBoard(object):
         if action.next :
             self.apply(action.next, chain=True) # Record only the first step.
         
+        self.light_cached = False
+        self.dark_cached = False
+        
     def all_move(self, color):
         '''
         Get all possible move for a player
@@ -203,6 +210,13 @@ class DBoard(object):
         RETURN:
             @return: List of all possible action. 
         '''
+        if color == 'LIGHT' :
+            if self.light_cached :
+                return self.light_pos_moves
+        else :
+            if self.dark_cached :
+                return self.dark_pos_moves
+        
         move = []
         capture = False
         if color == 'LIGHT' :
@@ -225,9 +239,16 @@ class DBoard(object):
             for m in move :
                 if m.type == 'CAPTURE' :
                     move_new.append(m)
-            return move_new
+            move = move_new
+        
+        if color == 'LIGHT' :
+            self.light_pos_moves = move
+            self.light_cached = True
         else :
-            return move    
+            self.dark_pos_moves = move
+            self.dark_cached = True 
+        
+        return move
                 
     def board_score(self, weights):
         '''
@@ -279,6 +300,8 @@ class DBoard(object):
         last = self.movelist.pop()
         undo = last.undo() # Make undo action from this.
         self.apply(undo) # Apply Undo.
+        self.light_cached = False
+        self.dark_cached = False
             
     def __str__(self):
         string = ""
