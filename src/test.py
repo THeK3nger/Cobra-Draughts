@@ -29,4 +29,4 @@ weights2 = {'PIECE':400,
 D = DraughtsBrain(weights1, 2, weights2,verbose=True)
 D.run_self()
 
-print "The winner is %s!" % D.winner
+print("The winner is %s!" % D.winner)

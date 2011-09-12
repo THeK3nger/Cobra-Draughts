@@ -54,7 +54,7 @@ class DBoard(object):
         row = 0
         column = 1
         delta = 1
-        for _ in xrange(20) :
+        for _ in range(20) :
             new_piece = DPiece(self, row, column, 'DARK')
             self.dark_pieces.append(new_piece)
             self.set_bitmap(row, column, new_piece)
@@ -68,7 +68,7 @@ class DBoard(object):
         row = 6
         column = 1
         delta = 1
-        for _ in xrange(20) :
+        for _ in range(20) :
             new_piece = DPiece(self, row, column, 'LIGHT')
             self.light_pieces.append(new_piece)
             self.set_bitmap(row, column, new_piece)
@@ -92,7 +92,7 @@ class DBoard(object):
         '''
         # If row%2 == 0 (column-1)/2 else column/2
         # This should be equivalent...
-        return 5 * row + column / 2
+        return int(5 * row + column / 2)
             
     def set_bitmap(self, row, column, value):
         '''
@@ -139,7 +139,7 @@ class DBoard(object):
         '''
         return self.bitmap[self.__cord2idx(row, column)]
     
-    def apply(self, action, chain=False):
+    def apply_action(self, action, chain=False):
         '''
         Apply an action to the board.
         
@@ -193,9 +193,9 @@ class DBoard(object):
             if action.promote :
                 piece.demote()
         
-        # If chain-capture (or chain-undo) apply next step.
+        # If chain-capture (or chain-undo) apply_action next step.
         if action.next :
-            self.apply(action.next, chain=True) # Record only the first step.
+            self.apply_action(action.next, chain=True) # Record only the first step.
         
         self.light_cached = False
         self.dark_cached = False
@@ -287,8 +287,8 @@ class DBoard(object):
             for f in features :
                 vdark[f] += 1
             
-        score_light = sum([vlight[key] * weights[key] for key in weights.iterkeys()])
-        score_dark = sum([vdark[key] * weights[key] for key in weights.iterkeys()])
+        score_light = sum([vlight[key] * weights[key] for key in weights.keys()])
+        score_dark = sum([vdark[key] * weights[key] for key in weights.keys()])
         
         return score_light - score_dark # Return difference.
     
@@ -299,14 +299,14 @@ class DBoard(object):
         # Get Last Action.
         last = self.movelist.pop()
         undo = last.undo() # Make undo action from this.
-        self.apply(undo) # Apply Undo.
+        self.apply_action(undo) # Apply Undo.
         self.light_cached = False
         self.dark_cached = False
             
     def __str__(self):
         string = ""
-        for row in xrange(10) :
-            for column in xrange(10) :
+        for row in range(10) :
+            for column in range(10) :
                 if ((row % 2 == 0) != (column % 2 == 0)) :
                     idx = self.__cord2idx(row, column)
                     if self.bitmap[idx] == None :

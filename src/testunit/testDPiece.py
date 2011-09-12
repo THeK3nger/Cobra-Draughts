@@ -58,7 +58,7 @@ class TestDPiece(unittest.TestCase):
     def testActionPromotion(self):
         '''Check promotion action.'''
         action = DAction('MOVE', (0, 1), (9, 1), promote=True)
-        self.board.apply(action)
+        self.board.apply_action(action)
         self.assert_(self.piece.is_king)
         
     def testPossibleAction(self):

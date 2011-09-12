@@ -166,7 +166,7 @@ class DPiece(object):
             for m in move :
                 if m.type == 'CAPTURE' :
                     # Check for chain captures.
-                    board.apply(m)
+                    board.apply_action(m)
                     next_steps = self.possible_action()
                     board.undo_last()
                     if next_steps and next_steps[0].type == 'CAPTURE' :
@@ -212,7 +212,7 @@ class DPiece(object):
             for m in move :
                 if m.type == 'CAPTURE' :
                     # Check for chain captures.
-                    board.apply(m)
+                    board.apply_action(m)
                     next_steps = self.possible_action()
                     board.undo_last()
                     if next_steps and next_steps[0].type == 'CAPTURE' :

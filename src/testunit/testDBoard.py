@@ -35,10 +35,10 @@ class TestDBoard(unittest.TestCase):
         self.assertEqual(self.board.get_piece(4, 3), 'DUMMY', "DUMMY Isn't where it should...")
         
     def testApply(self):
-        '''Check if apply applies action in a correct way.'''
+        '''Check if apply_action applies action in a correct way.'''
         piece = self.board.get_piece(0, 1)
         action = DAction('MOVE', (0, 1), (4, 1))
-        self.board.apply(action)
+        self.board.apply_action(action)
         self.assertEqual(self.board.get_piece(4, 1), piece, "Wrong Move Effect.")
 
 if __name__ == "__main__":

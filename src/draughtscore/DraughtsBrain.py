@@ -114,7 +114,7 @@ class DraughtsBrain(object):
             if not bestmove :
                 self.winner = self._switch_player(self.turn) # No valid move!
                 break
-            self.apply_move(bestmove)
+            self.apply_action(bestmove)
             if self.verbose : 
                 print(self.board)
                 print(self.board.board_score(self.weights))
@@ -122,14 +122,14 @@ class DraughtsBrain(object):
             self.winner = 'DRAW'
         return self.winner
                 
-    def apply_move(self, action):
+    def apply_action(self, action):
         '''
         Apply an action to board.
         
         ARGS:
             @param action: Action that it's going to be executed.
         '''
-        self.board.apply(action)
+        self.board.apply_action(action)
         self.move += 1
         if len(self.board.light_pieces) == 0 :
             self.gameover = True
@@ -203,7 +203,7 @@ class DraughtsBrain(object):
             moves = self.board.all_move(player)
             v = -float('inf')
             for mov in moves :
-                self.board.apply(mov)
+                self.board.apply_action(mov)
                 v = max(v, self.alphabeta(alpha, beta, level - 1, self._switch_player(player), weights))
                 self.board.undo_last()
                 if beta <= v :
@@ -216,7 +216,7 @@ class DraughtsBrain(object):
             moves = self.board.all_move(player);
             v = float('inf')
             for mov in moves :
-                self.board.apply(mov)
+                self.board.apply_action(mov)
                 v = min(v, self.alphabeta(alpha, beta, level - 1, self._switch_player(player), weights))
                 self.board.undo_last()
                 if v <= alpha :
