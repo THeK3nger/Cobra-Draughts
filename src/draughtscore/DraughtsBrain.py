@@ -36,7 +36,7 @@ __status__ = "Production"
 
 # Solve Python 3/2 range performance issue.
 try :
-    range = xrange # Use Python 2.x
+    range = xrange # Use Python 2.x @ReservedAssignment
 except :
     pass # Use Python 3.x
 
