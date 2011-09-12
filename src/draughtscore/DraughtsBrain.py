@@ -34,6 +34,12 @@ __maintainer__ = "Davide Aversa"
 __email__ = "thek3nger@gmail.com"
 __status__ = "Production"
 
+# Solve Python 3/2 range performance issue.
+try :
+    range = xrange # Use Python 2.x
+except :
+    pass # Use Python 3.x
+
 class DraughtsBrain(object):
     '''
     Class AI for Draughts.
