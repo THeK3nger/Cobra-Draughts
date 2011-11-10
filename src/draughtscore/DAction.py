@@ -41,17 +41,17 @@ class DAction(object):
     '''
 
 
-    def __init__(self, type, source, destination, captured=None, promote=False):
+    def __init__(self, atype, source, destination, captured=None, promote=False):
         '''
         Constructor
         
         ARGS:
-            @param type: Action Type
+            @param atype: Action Type (Can be CAPTURE, MOVE or UNDO)
             @param source: Tuple (row,column) of starting position.
             @param destination: Tuple (row,column) of ending position.
-            @param captured: Captured piece (if type is CAPTURE).
+            @param captured: Captured piece (if atype is CAPTURE).
         '''
-        self.type = type
+        self.type = atype
         self.source = source
         self.destination = destination
         self.captured = captured

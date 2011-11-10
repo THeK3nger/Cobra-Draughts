@@ -1,7 +1,7 @@
 '''
 Created on Jul 22, 2011
 
-@author: davide
+@author: Davide Aversa
 '''
 
 from draughtscore.DraughtsBrain import DraughtsBrain
@@ -26,6 +26,7 @@ weights2 = {'PIECE':400,
           'KFRONT':60,
           'MOB':0}
 
+# This is an usage example. It's easy!
 D = DraughtsBrain(weights1, 2, weights2,verbose=True)
 D.run_self()
 
