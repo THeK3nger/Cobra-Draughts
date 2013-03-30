@@ -23,7 +23,7 @@ DraughtsBrain module contains DraughtsBrain class and related stuff.
 
 import random
 
-from draughtscore.DBoard import DBoard
+from cobradraughts.core.DBoard import DBoard
 
 __author__ = "Davide Aversa"
 __copyright__ = "Copyright 2011"

@@ -4,7 +4,12 @@ Created on Jul 22, 2011
 @author: Davide Aversa
 '''
 
-from draughtscore.DraughtsBrain import DraughtsBrain
+import sys
+import os.path
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from cobradraughts.core.DraughtsBrain import DraughtsBrain
 
 weights1 = {'PIECE':400,
           'KING':1200,
