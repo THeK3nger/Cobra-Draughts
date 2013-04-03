@@ -16,7 +16,7 @@
 Created on Jul 21, 2011
 
 @author: Davide Aversa
-@version: 1.0
+@version: 1.1
 
 DAction module contains DAction class and related stuff.
 '''
@@ -25,7 +25,7 @@ __author__ = "Davide Aversa"
 __copyright__ = "Copyright 2011-2013"
 __credits__ = ["Davide Aversa", ]
 __license__ = "GPLv3"
-__version__ = "1.0"
+__version__ = "1.1"
 __maintainer__ = "Davide Aversa"
 __email__ = "thek3nger@gmail.com"
 __status__ = "Production"
